@@ -241,7 +241,7 @@ def get_word_pairs():
 
             
 
-#calculate ppmi based on output of ppmi.py, ppmi.tsv            
+#calculate spearman rho based on output of ppmi.py, results_ppmi.tsv            
 ppmi_tsv = '/Users/clairevanpoperin/results_ppmi.tsv'
 original_tsv = '/Users/clairevanpoperin/LING83600 langtech/lab1-cvanpop-master/data/ws353.tsv'
 
@@ -275,7 +275,6 @@ def get_spearmanr_ppmi(original_tsv, ppmi_tsv):
     print('Found pairs: ', count_found)
     print('Percent found: ', round(count_found/count,4))
 
-ppmi = get_spearmanr_ppmi(original_tsv, ppmi_tsv)
    
 
 #calls
@@ -287,7 +286,11 @@ ppmi = get_spearmanr_ppmi(original_tsv, ppmi_tsv)
 
 #command line call ppmi.py
 """
-python ppmi.py --results_path results_ppmi.tsv --pairs_path token_pairs.tsv --tok_path tokenized_text.txt
+python ppmi.py --results_path results_ppmi_window15.tsv --pairs_path token_pairs.tsv --tok_path tokenized_text.txt --window 4
+
+--window WINDOW       symmetric window size (default: 10)
+
+
 """
 
 #logging info
@@ -300,6 +303,8 @@ INFO: 152 pairs covered
 
 
 """ Part 3 """
+#calculate spearman rho based on output of word2vec.py, results_word2vec.tsv            
+
 word2vec_tsv = '/Users/clairevanpoperin/results_word2vec.tsv'
 original_tsv = '/Users/clairevanpoperin/LING83600 langtech/lab1-cvanpop-master/data/ws353.tsv'
 
@@ -332,11 +337,12 @@ def get_spearmanr_word2vec(original_tsv, word2vec_tsv):
     print('Found pairs: ', count_found)
     print('Percent found: ', round(count_found/count,4))
 
-word2vec = get_spearmanr_word2vec(original_tsv, word2vec_tsv)
+
 
 #command line for word2vec.py
 """
 python word2vec.py --results_path results_word2vec.tsv --pairs_path token_pairs.tsv --tok_path tokenized_text.txt
+word2vec = get_spearmanr_word2vec(original_tsv, word2vec_tsv)
 """
 
 #logging info
