@@ -38,7 +38,6 @@ def get_sense_lst():
     #print('Total pairs: ', count)
     #print('Found pairs: ', count_found)
     #print('Percent found: ', round(count_found/count,4))
-    print(sense_lst)
     return(sense_lst)
 
 
@@ -61,7 +60,6 @@ def get_path_sim():
             continue
     (stat, p) = scipy.stats.spearmanr(path_sim_lst, path_sim_human_score_lst)
     spearman_rho = round(stat, 4)
-    
     print('Path Similarity:')    
     print('Spearman Rho: ', spearman_rho)
     print('Total pairs: ', len(sense_lst2))
@@ -260,9 +258,14 @@ def get_spearmanr_ppmi(original_tsv, ppmi_tsv):
         human_score_matches = []
         ppmi_score_matches = []
         for ppmi_row in ppmi_reader:
-            ppmi_pair = (ppmi_row[0], ppmi_row[1])
+            ppmi_pair1 = (ppmi_row[0], ppmi_row[1])
+            ppmi_pair2 = (ppmi_row[1], ppmi_row[1])
             for pair in orig_pairs:
-                if ppmi_pair == pair[0]:
+                if ppmi_pair1 == pair[0]:
+                    count_found += 1
+                    human_score_matches.append(pair[1])
+                    ppmi_score_matches.append(ppmi_row[2])    
+                if ppmi_pair2 == pair[0]:
                     count_found += 1
                     human_score_matches.append(pair[1])
                     ppmi_score_matches.append(ppmi_row[2])
@@ -323,15 +326,20 @@ def get_spearmanr_word2vec(original_tsv, word2vec_tsv):
         human_score_matches = []
         word2vec_score_matches = []
         for word2vec_row in word2vec_reader:
-            word2vec_pair = (word2vec_row[0], word2vec_row[1])
+            word2vec_pair1 = (word2vec_row[0], word2vec_row[1])
+            word2vec_pair2 = (word2vec_row[1], word2vec_row[0])
             for pair in orig_pairs:
-                if word2vec_pair == pair[0]:
+                if word2vec_pair1 == pair[0]:
+                    count_found += 1
+                    human_score_matches.append(pair[1])
+                    word2vec_score_matches.append(word2vec_row[2])
+                if word2vec_pair2 == pair[0]:
                     count_found += 1
                     human_score_matches.append(pair[1])
                     word2vec_score_matches.append(word2vec_row[2])
     (stat, p) = scipy.stats.spearmanr(human_score_matches, word2vec_score_matches)
     spearman_rho = round(stat, 4)
-    print('word2vec Similarity:')    
+    print('Word2Vec Similarity:')    
     print('Spearman Rho: ', spearman_rho)
     print('Total pairs: ', count)
     print('Found pairs: ', count_found)
