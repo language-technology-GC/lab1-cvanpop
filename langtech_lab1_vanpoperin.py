@@ -259,17 +259,12 @@ def get_spearmanr_ppmi(original_tsv, ppmi_tsv):
         ppmi_score_matches = []
         for ppmi_row in ppmi_reader:
             ppmi_pair1 = (ppmi_row[0], ppmi_row[1])
-            ppmi_pair2 = (ppmi_row[1], ppmi_row[1])
+            ppmi_pair2 = (ppmi_row[1], ppmi_row[0])
             for pair in orig_pairs:
-                if ppmi_pair1 == pair[0]:
-                    count_found += 1
-                    human_score_matches.append(pair[1])
-                    ppmi_score_matches.append(ppmi_row[2])    
-                if ppmi_pair2 == pair[0]:
+                if ppmi_pair1 == pair[0] or ppmi_pair2 == pair[0]:
                     count_found += 1
                     human_score_matches.append(pair[1])
                     ppmi_score_matches.append(ppmi_row[2])
-    #return human_score_matches, ppmi_score_matches
     (stat, p) = scipy.stats.spearmanr(human_score_matches, ppmi_score_matches)
     spearman_rho = round(stat, 4)
     print('PPMI Similarity:')    
@@ -329,14 +324,11 @@ def get_spearmanr_word2vec(original_tsv, word2vec_tsv):
             word2vec_pair1 = (word2vec_row[0], word2vec_row[1])
             word2vec_pair2 = (word2vec_row[1], word2vec_row[0])
             for pair in orig_pairs:
-                if word2vec_pair1 == pair[0]:
+                if word2vec_pair1 == pair[0] or word2vec_pair2 == pair[0]:
                     count_found += 1
                     human_score_matches.append(pair[1])
                     word2vec_score_matches.append(word2vec_row[2])
-                if word2vec_pair2 == pair[0]:
-                    count_found += 1
-                    human_score_matches.append(pair[1])
-                    word2vec_score_matches.append(word2vec_row[2])
+                
     (stat, p) = scipy.stats.spearmanr(human_score_matches, word2vec_score_matches)
     spearman_rho = round(stat, 4)
     print('Word2Vec Similarity:')    
